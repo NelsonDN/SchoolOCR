@@ -7,6 +7,8 @@ from django.urls import path
 from django.shortcuts import redirect
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.db.models import Avg
+from orientation.models import Filiere, Filiere_Matiere
 # admin.site.register(Classe_Matiere)
 
 class MatiereInline(admin.TabularInline):
@@ -56,16 +58,69 @@ class ClasseAdmin(admin.ModelAdmin):
     search_fields = ['cycle__name', 'name']
     list_per_page = 10
     inlines = [MatiereInline]
-    
+
+
+def predict_orientation(eleve):
+    """
+    Fonction pour prédire l'orientation d'un élève en fonction de ses notes dans les matières et des critères d'admission des filières.
+    """
+    # Récupérer les critères d'admission pour chaque filière
+    filieres = Filiere.objects.prefetch_related('filiere_matiere_set').all()
+
+    # Initialiser un dictionnaire pour stocker les notes moyennes de l'élève dans chaque matière
+    moyennes_par_matiere = {}
+
+    # Calculer les moyennes des notes de l'élève dans chaque matière
+    for classe_matiere in eleve.classe.classe_matiere_set.all():
+        #Récupération des résultats associés à cette classe_matiere
+        resultats = Resultat.objects.filter(classematiere_id=classe_matiere)
+        notes = Note.objects.filter(eleve_id=eleve, resultat_id__in=resultats)
+        # notes = Note.objects.filter(eleve_id=eleve, resultat_id__classematiere=classe_matiere)
+        if notes.exists():
+            moyenne = sum(float(note.note) for note in notes) / len(notes)
+            moyennes_par_matiere[classe_matiere.matiere_id] = moyenne
+
+    # Prédire l'orientation de l'élève en fonction des critères d'admission pour chaque filière
+    filiere_predite = None
+    meilleur_score = 0
+    for filiere in filieres:
+        score_filiere = 0
+        for filiere_matiere in filiere.filiere_matiere_set.all():
+            if filiere_matiere.matiere_id in moyennes_par_matiere:
+                if moyennes_par_matiere[filiere_matiere.matiere_id] >= filiere_matiere.note:
+                    score_filiere += 1
+        if score_filiere > meilleur_score:
+            filiere_predite = filiere
+            meilleur_score = score_filiere
+
+    return filiere_predite
 
 @admin.register(Eleve)
 class EleveAdmin(admin.ModelAdmin):
     fields = ['name', 'matricule', 'classe']
     
-    list_display = ('name', 'classe', 'matricule')
+    list_display = ('name', 'classe', 'matricule', 'predict_orientation_link', 'filiere')
     list_filter = ['matricule', 'classe']
     search_fields = ['matricule', 'classe__name']
     list_per_page = 10
+    actions = ['predict_orientation_for_selected_students']
+
+    def predict_orientation_link(self, obj):
+        return format_html('<a href="{}">Prédire</a>'.format(
+            reverse('schoolmanage:predict_orientation', args=[obj.pk])
+        ))
+    predict_orientation_link.short_description = "Prédiction d'orientation"
+
+    def predict_orientation_for_selected_students(self, request, queryset):
+        for eleve in queryset:
+            # Code pour la prédiction de l'orientation de chaque élève
+            filiere_predite = predict_orientation(eleve)
+            # Mettre à jour la filière prédite pour cet élève
+            eleve.filiere = filiere_predite
+            eleve.save()
+
+    predict_orientation_for_selected_students.short_description = "Prédire l'orientation des élèves sélectionnés"
+
     def get_actions(self, request):
         # Supprimer toutes les actions par défaut
         actions = super().get_actions(request)

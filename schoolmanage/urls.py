@@ -12,7 +12,8 @@ urlpatterns = [
     path('matiere/evaluation/<int:matiere_id>/', views.show_evaluation, name = 'show_evaluation'),
     path('evaluation/note/index/<int:evaluation_id>/', views.index_note, name = 'index_note'),
     path('evaluation/note/edit/<int:eleve_note_id>/', views.edit_note, name = 'edit_note'),
-    path('evaluation/note/form/<int:evaluation_id>/', views.add_note, name = 'add_note')
+    path('evaluation/note/form/<int:evaluation_id>/', views.add_note, name = 'add_note'),
+    path('predict_orientation/<int:eleve_id>/', views.predict_orientation_view, name='predict_orientation')
 
 ]
 

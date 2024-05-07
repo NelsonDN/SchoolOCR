@@ -8,6 +8,12 @@ import datetime
 from .models import Eleve, Enseignant, Evaluation, Classe, Matiere, Classe_Matiere, Resultat, Note
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.core.files.storage import FileSystemStorage
+from django.shortcuts import get_object_or_404
+from django.http import JsonResponse
+from django.db.models import Avg
+# from .admin import predict_orientation
+from orientation.models import Filiere, Filiere_Matiere
+
 
 #OCR
 from PIL import Image
@@ -24,6 +30,57 @@ import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
 
+
+def predict_orientation(eleve):
+    """
+    Fonction pour prédire l'orientation d'un élève en fonction de ses notes dans les matières et des critères d'admission des filières.
+    """
+    # Récupérer les critères d'admission pour chaque filière
+    filieres = Filiere.objects.prefetch_related('filiere_matiere_set').all()
+
+    # Initialiser un dictionnaire pour stocker les notes moyennes de l'élève dans chaque matière
+    moyennes_par_matiere = {}
+
+    # Calculer les moyennes des notes de l'élève dans chaque matière
+    for classe_matiere in eleve.classe.classe_matiere_set.all():
+        #Récupération des résultats associés à cette classe_matiere
+        resultats = Resultat.objects.filter(classematiere_id=classe_matiere)
+        notes = Note.objects.filter(eleve_id=eleve, resultat_id__in=resultats)
+        # notes = Note.objects.filter(eleve_id=eleve, resultat_id__classematiere=classe_matiere)
+        if notes.exists():
+            moyenne = sum(float(note.note) for note in notes) / len(notes)
+            moyennes_par_matiere[classe_matiere.matiere_id] = moyenne
+
+    # Prédire l'orientation de l'élève en fonction des critères d'admission pour chaque filière
+    filiere_predite = None
+    meilleur_score = 0
+    for filiere in filieres:
+        score_filiere = 0
+        for filiere_matiere in filiere.filiere_matiere_set.all():
+            if filiere_matiere.matiere_id in moyennes_par_matiere:
+                if moyennes_par_matiere[filiere_matiere.matiere_id] >= filiere_matiere.note:
+                    score_filiere += 1
+        if score_filiere > meilleur_score:
+            filiere_predite = filiere
+            meilleur_score = score_filiere
+
+    return filiere_predite
+
+def predict_orientation_view(request, eleve_id):
+    # Récupérer l'élève
+    eleve = get_object_or_404(Eleve, pk=eleve_id)
+
+    # Appeler la fonction de prédiction d'orientation
+    filiere_predite = predict_orientation(eleve)
+
+    # Mettre à jour la prédiction d'orientation de l'élève
+    eleve.filiere = filiere_predite.name
+    eleve.save()
+
+    # Ajouter un message de succès
+    messages.success(request, f"Prédiction d'orientation pour {eleve.name} mise à jour avec succès.")
+
+    return redirect('admin:schoolmanage_eleve_changelist')
 
 def home(request):
     context = {"message": "Hello World !",
