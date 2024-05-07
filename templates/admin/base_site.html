@@ -1,0 +1,19 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% load static %}
+{% block extrahead %}
+    <link rel="shortcut icon" href="{% static 'schoolmanage/assetshome/img/logo1.png' %}" />
+    <link href="{% static 'schoolmanage/assetshome/img/logo1.png' %}" rel="icon">
+    <link href="{% static 'schoolmanage/assetshome/img/logo1.png' %}" rel="apple-touch-icon">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">Panneau d'administration | SchoolOCR</a></div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

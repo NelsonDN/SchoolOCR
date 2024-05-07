@@ -1,0 +1,53 @@
+.awrapper {
+	font-size: 20vmin;
+	height: 2em;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	mix-blend-mode: screen;
+	
+	&.zinvert {
+		span {
+			color: black;
+			
+			&::before {
+				-webkit-text-stroke: .1em var(--color);
+			}
+		}
+	}
+	
+	span {
+		--color: #ffba11;
+		font-family: Impact, 'Anton', Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+		font-weight: 700;
+		font-style: italic;
+		display: block;
+		position: absolute;
+		color: var(--color);
+		letter-spacing: -.005em;
+
+		&::before, &::after {
+			content: attr(data-text);
+			display: block;
+			position: relative;
+			padding: 0 .1em;
+			z-index: 1;
+		}
+
+		&::before {
+			position: absolute;
+			-webkit-text-stroke: .1em black;
+			z-index: 0;
+		}
+
+		&:first-child {
+			transform: translate(-.255em, -.25em);
+		}
+
+		&:last-child {
+			--color: #b6acff;
+			transform: translate(.255em, .25em);
+		}
+	}
+}

@@ -1,0 +1,113 @@
+{% extends "schoolmanage/app.html" %}
+
+{% block title %}
+   SchooOCR | Evaluation
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+
+{% include "schoolmanage/layouts/header.html" %}
+
+
+
+<section id="features">
+    <div class="container">
+        <div class="text-white">
+            qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+        </div>
+        <div class="text-white">
+            qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+        </div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'schoolmanage:enseignants' %}">Classe {{ classe.name }}</a> </li>
+            <li class="breadcrumb-item active">Matiere {{ matiere.name }} </li>
+            <li class="breadcrumb-item active">{{ evaluation.name }} </li>
+            <li class="breadcrumb-item active">Ajouter les notes OCR </li>
+            
+        </ol>
+    </nav>
+    <div class="text-white">
+        qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+    </div>
+    <div class="text-white">
+        qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+    </div>
+
+      <div class="row feature-item">
+        <div class="col-sm-12 border border-2 rounded rounded-3 p-3 bg-default ">
+            <form method="POST" action="."  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row ">
+                  <div class="form-group col-md-6">
+                    <label for="inputEmail4">Classe</label>
+                    <input type="text" name="classe" value="{{ classe.name }}" disabled class="form-control" id="inputEmail4">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputPassword4">Matiere</label>
+                    <input type="text" name="matiere" value="{{ matiere.name }}" disabled class="form-control" id="inputPassword4">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputAddress">Evaluation</label>
+                  <input type="text" name="evaluation" value="{{ evaluation.name }}" disabled class="form-control" id="inputAddress" placeholder="1234 Main St">
+                </div>
+                
+                <label for="inputAddress">Note</label>
+                <div class="custom-file">
+                    <input type="file" name="file_note" class="custom-file-input" id="customFile" required>
+                    <label class="custom-file-label" for="customFile">Choisir la fichier de releve de notes (png, jpg, jpeg) </label>
+                </div>
+                 <br><br><br>
+                <button type="submit" class="btn btn-primary">ENREGISTRER</button>
+              </form>
+        </div>
+        
+        
+
+      </div>
+
+    </div>
+</section><!-- #about -->
+
+
+<!--==========================
+    Footer
+  ============================-->
+  <footer id="footer" style="background: #bcc4cf;"  >
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong>SchooLOcr</strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+
+        <!-- Designed by <a href="">fed</a> -->
+      </div>
+    </div>
+  </footer><!-- #footer -->
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+
+  <!-- JavaScript libraries -->
+  <script src="{% static 'schoolmanage/assetshome/lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/mobile-nav/mobile-nav.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/lightbox/js/lightbox.min.js' %}"></script>
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'schoolmanage/assetshome/contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'schoolmanage/assetshome/js/main.js' %}"></script>
+
+{% endblock content %}

@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Se connecter </title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<!-- <link rel="icon" type="image/png" href="{% static 'accounts/assetshome/img/logo1.png' %}"/> -->
+	<link href="{% static 'schoolmanage/assetshome/img/logo1.png' %}" rel="icon">
+	<link href="{% static 'schoolmanage/assetshome/img/logo1.png' %}" rel="apple-touch-icon">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/animate/animate.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'accounts/assetslogin/css/main.css' %}">
+<!--===============================================================================================-->
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url({% static 'accounts/assetslogin/images/kids.jpg' %});">
+					<span class="login100-form-title-1">
+						Connexion
+					</span>
+				</div>
+
+				<form class="login100-form validate-form" method="POST" action=".">
+                    {% csrf_token %}
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="label-input100">Nom</span>
+						<input class="input100" type="text" name="username" placeholder="Entrer le nom d'utilisateur">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Mot de passe</span>
+						<input class="input100" type="password" name="password" placeholder="Entrer le mot de passe">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="flex-sb-m w-full p-b-30">
+						<div class="contact100-form-checkbox">
+							<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+							<label class="label-checkbox100" for="ckb1">
+								Se souvenir de moi
+							</label>
+						</div>
+
+						<div>
+							<a href="#" class="txt1">
+								Mot de passe oublié?
+							</a>
+						</div>
+					</div>
+                    {% for message in messages %}
+                        <p style="color: red;">{{ message }}</p>
+                    {% endfor %}
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn" type="submit">
+							Connexion
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'accounts/assetslogin/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'accounts/assetslogin/vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'accounts/assetslogin/js/main.js' %}"></script>
+
+</body>
+</html>
+
+
+<!-- <h1>Connexion</h1>
+
+{% for message in messages %}
+    <p>{{ message }}</p>
+{% endfor %}
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Se connecter">
+</form> -->

@@ -1,0 +1,106 @@
+{% extends "schoolmanage/app.html" %}
+
+{% block title %}
+   SchooOCR | Evaluation
+{% endblock title %}
+
+{% block content %}
+{% load static %}
+
+{% include "schoolmanage/layouts/header.html" %}
+
+
+
+<section id="features">
+    <div class="container">
+        <div class="text-white">
+            qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+        </div>
+        <div class="text-white">
+            qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+        </div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item "><a href="{% url 'schoolmanage:enseignants' %}">Classe {{ classe.name }}</a> </li>
+            <li class="breadcrumb-item active">Matiere {{ matiere.name }} </li>
+            <li class="breadcrumb-item active">{{ evaluation.name }} </li>
+            <li class="breadcrumb-item active">Consulter les résultats </li>
+            
+        </ol>
+    </nav>
+    <div class="text-white">
+        qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+    </div>
+    <div class="text-white">
+        qsssssssssssssssssssssssssssssssqsssssssssssssssssssssssssssssssss
+    </div>
+      {% if eleves_notes %}
+      {% else %}
+      <div class="row feature-item">
+        <div class="col-md-6 offset-md-6 text-right"> <!-- Utilisation de offset-md-6 pour déplacer le bouton de 6 colonnes vers la droite -->
+            <a href="{% url 'schoolmanage:add_note' evaluation.id %}">
+              <button class="btn btn-primary">Ajouter les notes via OCR</button>
+            </a>
+        </div>
+      </div>
+      <br>
+      {% endif %}
+
+      <div class="row feature-item">
+        <div class="col-sm-12 border border-2 rounded rounded-3 p-3 bg-default ">
+            <div>
+                <h2>Liste des Elèves {{ classe.name }} - {{ matiere.name }} | {{ evaluation.name }}</h2>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Noms</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for eleve_note in eleves_notes %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ eleve_note.eleve_id.name }}</td>
+                        <td>{{ eleve_note.note }}</td>
+                        <td><a href="{% url 'schoolmanage:edit_note' eleve_note.id %}" class="btn btn-secondary">Modifier</a></td>
+                    </tr>
+                    {% empty %}
+                      <tr>
+                        <td colspan="4" class="text-center">Pas de résultats</td>
+                      </tr> 
+                    {% endfor %}
+                </tbody>
+              </table>
+        </div>
+      </div>
+
+    </div>
+</section><!-- #about -->
+
+
+
+
+  <!-- JavaScript libraries -->
+  <script src="{% static 'schoolmanage/assetshome/lib/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/jquery/jquery-migrate.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/easing/easing.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/mobile-nav/mobile-nav.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/wow/wow.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/waypoints/waypoints.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/counterup/counterup.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/isotope/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'schoolmanage/assetshome/lib/lightbox/js/lightbox.min.js' %}"></script>
+  <!-- Contact Form JavaScript File -->
+  <script src="{% static 'schoolmanage/assetshome/contactform/contactform.js' %}"></script>
+
+  <!-- Template Main Javascript File -->
+  <script src="{% static 'schoolmanage/assetshome/js/main.js' %}"></script>
+
+{% endblock content %}
