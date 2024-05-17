@@ -50,7 +50,9 @@ def predict_orientation(eleve):
         if notes.exists():
             moyenne = sum(float(note.note) for note in notes) / len(notes)
             moyennes_par_matiere[classe_matiere.matiere_id] = moyenne
-
+        print(moyennes_par_matiere)
+        print(moyenne)
+        
     # Prédire l'orientation de l'élève en fonction des critères d'admission pour chaque filière
     filiere_predite = None
     meilleur_score = 0
@@ -72,6 +74,11 @@ def predict_orientation_view(request, eleve_id):
 
     # Appeler la fonction de prédiction d'orientation
     filiere_predite = predict_orientation(eleve)
+    print("AAAAAAAAA")
+    if filiere_predite is None:
+        filiere_predite = Filiere.objects.get(pk = 1)
+    else:
+        print(f"La filière prédite est {filiere_predite}.")
 
     # Mettre à jour la prédiction d'orientation de l'élève
     eleve.filiere = filiere_predite.name

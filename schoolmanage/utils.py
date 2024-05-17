@@ -22,6 +22,8 @@ def predict_orientation(eleve):
         if notes.exists():
             moyenne = sum(float(note.note) for note in notes) / len(notes)
             moyennes_par_matiere[classe_matiere.matiere_id] = moyenne
+        print(moyennes_par_matiere)
+        print(moyenne)
 
     # Prédire l'orientation de l'élève en fonction des critères d'admission pour chaque filière
     filiere_predite = None

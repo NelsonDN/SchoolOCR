@@ -9,6 +9,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.db.models import Avg
 from orientation.models import Filiere, Filiere_Matiere
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 # admin.site.register(Classe_Matiere)
 
 class MatiereInline(admin.TabularInline):
@@ -164,6 +166,11 @@ class EnseignantAdmin(admin.ModelAdmin):
         if classe_matiere_ids:
             Classe_Matiere.objects.filter(pk__in=classe_matiere_ids).update(user=obj)
             
+# Désenregistrez l'administration standard de User
+# admin.site.unregister(User)
+
+# admin.site.register(User, UserAdmin)
+
 admin.site.register(Enseignant, EnseignantAdmin)
 
 @admin.register(Resultat)
